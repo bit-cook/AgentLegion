@@ -1,0 +1,6 @@
+__pycache__/
+*.py[cod]
+*$py.class
+experiment_results.csv
+.env
+.DS_Store
