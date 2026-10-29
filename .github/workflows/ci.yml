@@ -12,7 +12,9 @@ permissions:
 jobs:
   test:
     name: Python ${{ matrix.python-version }}
-    runs-on: ubuntu-latest
+    # Self-hosted runner (registered on the maintainer's machine) — GitHub-hosted
+    # runners queue for hours on this account.
+    runs-on: self-hosted
     strategy:
       fail-fast: false
       matrix:
