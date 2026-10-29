@@ -1,6 +1,7 @@
-openai>=1.0.0
-pydantic>=2.0.0
-python-dotenv
-colorama
-numpy
-tqdm
+# AgentLegion has ZERO runtime dependencies (pure standard library).
+# This file exists so the documented `pip install -r requirements.txt`
+# keeps working; it installs nothing on purpose.
+#
+# To use a real OpenAI-compatible model instead of the deterministic mock,
+# set environment variables (see .env.example) — no packages required:
+#   OPENAI_API_KEY=sk-...

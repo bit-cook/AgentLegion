@@ -1,13 +1,9 @@
-import os
+"""Backwards-compatible shim: configuration now lives in ``agent_legion.config``.
 
-class Config:
-    MAX_AGENTS = 50
-    INITIAL_AGENTS = 5
-    GENERATIONS = 10
-    MUTATION_RATE = 0.1
-    SURVIVAL_RATE = 0.5
-    PROBLEM_COMPLEXITY = 100
-    
-    # LLM Configuration (Mock if API key not present)
-    OPENAI_API_KEY = os.getenv("OPENAI_API_KEY", "")
-    USE_MOCK_LLM = True # Force mock for now due to install issues
+The canonical import is ``from agent_legion import load_config`` / ``Config``;
+this module keeps the historical ``from config import Config`` working when
+running from a source checkout.
+"""
+from agent_legion.config import Config, ConfigError, load_config
+
+__all__ = ["Config", "ConfigError", "load_config"]

@@ -1,6 +1,18 @@
 __pycache__/
 *.py[cod]
 *$py.class
+*.egg-info/
+build/
+dist/
+.venv/
+venv/
+
+# experiment artifacts
 experiment_results.csv
+
+# secrets & local config
 .env
+
+# OS
 .DS_Store
+Thumbs.db

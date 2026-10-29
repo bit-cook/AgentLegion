@@ -1,13 +1,8 @@
-from agent_legion.environment import Environment
-from config import Config
-import sys
+"""Historical entry point — runs the evolution demo.
 
-def main():
-    print("Initializing AgentLegion...")
-    print(f"Configuration: Max Agents={Config.MAX_AGENTS}, Generations={Config.GENERATIONS}")
-    
-    env = Environment(Config)
-    env.run_simulation()
+Equivalent to ``agentlegion run`` (or ``python -m agent_legion.cli run``).
+"""
+from agent_legion.cli import main
 
 if __name__ == "__main__":
-    main()
+    raise SystemExit(main())

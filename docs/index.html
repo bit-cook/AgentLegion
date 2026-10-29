@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AgentLegion — 自我克隆的 AI 智能体，通过竞争寻求最优解</title>
+  <meta name="description" content="AgentLegion: self-cloning AI agents that compete for optimal solutions. 一生万物 — one becomes many. Zero-dependency, reproducible evolutionary multi-agent framework with a live in-browser demo." />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%238b5cf6'/%3E%3Cstop offset='1' stop-color='%2322d3ee'/%3E%3C/linearGradient%3E%3C/defs%3E%3Ccircle cx='16' cy='16' r='4' fill='url(%23g)'/%3E%3Ccircle cx='16' cy='5' r='2.4' fill='%238b5cf6'/%3E%3Ccircle cx='26' cy='21' r='2.4' fill='%2322d3ee'/%3E%3Ccircle cx='6' cy='21' r='2.4' fill='%2322d3ee'/%3E%3Ccircle cx='22' cy='7' r='1.6' fill='%238b5cf6' opacity='.7'/%3E%3Ccircle cx='9' cy='8' r='1.6' fill='%2322d3ee' opacity='.7'/%3E%3C/svg%3E" />
+  <meta property="og:title" content="AgentLegion — One Becomes Many" />
+  <meta property="og:description" content="Self-cloning AI agents that compete for optimal solutions. Live evolution demo in your browser." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://bit-cook.github.io/AgentLegion/" />
+  <link rel="stylesheet" href="assets/style.css" />
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <nav>
+    <a class="nav-brand" href="#hero">
+      <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+        <circle cx="16" cy="16" r="4" fill="url(#brandgrad)"/>
+        <circle cx="16" cy="5" r="2.4" fill="#8b5cf6"/>
+        <circle cx="26" cy="21" r="2.4" fill="#22d3ee"/>
+        <circle cx="6" cy="21" r="2.4" fill="#22d3ee"/>
+        <defs>
+          <linearGradient id="brandgrad" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0" stop-color="#8b5cf6"/><stop offset="1" stop-color="#22d3ee"/>
+          </linearGradient>
+        </defs>
+      </svg>
+      AgentLegion
+    </a>
+    <div class="nav-links">
+      <a href="#demo" data-i18n="nav.demo">实时演示</a>
+      <a href="#how" data-i18n="nav.how">工作原理</a>
+      <a href="#benchmarks" data-i18n="nav.bench">基准数据</a>
+      <a href="#quickstart" data-i18n="nav.quick">快速开始</a>
+      <a href="#architecture" data-i18n="nav.arch">架构</a>
+      <a href="https://github.com/bit-cook/AgentLegion" target="_blank" rel="noopener">GitHub</a>
+      <div class="lang-toggle">
+        <button data-lang="zh" class="active">中文</button>
+        <button data-lang="en">EN</button>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <!-- ================= HERO ================= -->
+    <section id="hero">
+      <canvas id="hero-canvas"></canvas>
+      <span class="kicker" data-i18n="hero.kicker">自治智能体框架 · 开源</span>
+      <h1 class="hero-title gradient-text" data-i18n="hero.title">一生万物</h1>
+      <p class="hero-sub" data-i18n="hero.sub">自我克隆的 AI 智能体在<strong>真实目标函数</strong>上竞争、进化、寻求最优解。</p>
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#demo" data-i18n="hero.cta.demo">▶ 运行实时演示</a>
+        <a class="btn btn-ghost" href="https://github.com/bit-cook/AgentLegion" target="_blank" rel="noopener">
+          <svg width="17" height="17" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z"/></svg>
+          <span data-i18n="hero.cta.github">GitHub 仓库</span>
+        </a>
+      </div>
+      <div class="install-cmd">
+        <span class="prompt">$</span>
+        <span>pip install agentlegion &amp;&amp; agentlegion run --seed 42</span>
+        <button class="copy-btn" data-copy=".install-cmd span:nth-child(2)" title="copy">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5.5" y="5.5" width="9" height="9" rx="1.5"/><path d="M10.5 5.5v-4a1 1 0 0 0-1-1h-8a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h4"/></svg>
+        </button>
+      </div>
+      <div class="hero-stats">
+        <div class="hero-stat"><b>0</b><span data-i18n="hero.stat1">运行时依赖</span></div>
+        <div class="hero-stat"><b>121</b><span data-i18n="hero.stat2">单元测试</span></div>
+        <div class="hero-stat"><b>3</b><span data-i18n="hero.stat3">基准问题</span></div>
+        <div class="hero-stat"><b>~0.05s</b><span data-i18n="hero.stat4">跑完 20 代耗时</span></div>
+      </div>
+    </section>
+
+    <!-- ================= LIVE DEMO ================= -->
+    <section id="demo">
+      <div class="reveal">
+        <span class="kicker" data-i18n="demo.kicker">LIVE DEMO</span>
+        <h2 data-i18n="demo.title">在浏览器里观看进化</h2>
+        <p class="section-sub" data-i18n="demo.sub">下面运行的正是仓库中的完整算法（JavaScript 忠实移植）。</p>
+      </div>
+      <div class="demo-layout reveal">
+        <div class="panel demo-controls">
+          <div class="control">
+            <label><span data-i18n="demo.problem">基准问题</span></label>
+            <select id="ctl-problem">
+              <option value="rastrigin" selected>rastrigin</option>
+              <option value="sphere">sphere</option>
+              <option value="rosenbrock">rosenbrock</option>
+            </select>
+          </div>
+          <div class="control">
+            <label><span data-i18n="demo.population">种群上限</span><output id="out-population">50</output></label>
+            <input type="range" id="ctl-population" min="10" max="100" step="5" value="50" />
+          </div>
+          <div class="control">
+            <label><span data-i18n="demo.generations">进化代际</span><output id="out-generations">40</output></label>
+            <input type="range" id="ctl-generations" min="10" max="60" step="5" value="40" />
+          </div>
+          <div class="control">
+            <label><span data-i18n="demo.mutation">变异率</span><output id="out-mutation">0.25</output></label>
+            <input type="range" id="ctl-mutation" min="0" max="0.6" step="0.05" value="0.25" />
+          </div>
+          <div class="control">
+            <label><span data-i18n="demo.elite">精英比例</span><output id="out-elite">0.10</output></label>
+            <input type="range" id="ctl-elite" min="0.02" max="0.5" step="0.02" value="0.1" />
+          </div>
+          <div class="control">
+            <label><span data-i18n="demo.seed">随机种子</span></label>
+            <input type="number" id="ctl-seed" value="42" />
+          </div>
+          <div class="control">
+            <label><span data-i18n="demo.speed">速度</span><output id="out-speed">120</output></label>
+            <input type="range" id="ctl-speed" min="20" max="200" step="10" value="120" />
+          </div>
+          <div class="demo-buttons">
+            <button class="btn btn-primary" id="demo-toggle">▶ 开始</button>
+            <button class="btn btn-ghost" id="demo-reset">↺ 重置</button>
+          </div>
+        </div>
+        <div class="demo-stage">
+          <div class="canvas-wrap">
+            <canvas id="demo-canvas"></canvas>
+            <span class="canvas-badge" data-i18n="demo.world">解空间（智能体当前位置）</span>
+          </div>
+          <div class="canvas-wrap">
+            <canvas id="demo-chart"></canvas>
+            <span class="canvas-badge" data-i18n="demo.chart.title">适应度曲线（越高越好）</span>
+          </div>
+          <div class="demo-readouts">
+            <div class="readout"><span data-i18n="demo.gen">第 N 代</span><b id="ro-gen">0 / 40</b></div>
+            <div class="readout"><span data-i18n="demo.best">最优得分</span><b id="ro-best">—</b></div>
+            <div class="readout"><span data-i18n="demo.mean">平均得分</span><b id="ro-mean">—</b></div>
+            <div class="readout"><span data-i18n="demo.diversity">种群多样性</span><b id="ro-div">—</b></div>
+            <div class="readout"><span data-i18n="demo.evals">总评估次数</span><b id="ro-evals">—</b></div>
+          </div>
+          <div class="demo-legend">
+            <span class="legend-item"><span class="legend-dot" style="background:#8b5cf6"></span><span data-i18n="demo.legend.agent">智能体（按代际着色）</span></span>
+            <span class="legend-item"><span class="legend-dot" style="background:#34d399"></span><span data-i18n="demo.legend.best">当代最优 + 轨迹</span></span>
+            <span class="legend-item"><span class="legend-dot" style="background:#fbbf24"></span><span data-i18n="demo.legend.optimum">全局最优点</span></span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= HOW IT WORKS ================= -->
+    <section id="how">
+      <div class="reveal">
+        <span class="kicker" data-i18n="how.kicker">HOW IT WORKS</span>
+        <h2 data-i18n="how.title">四阶段进化循环</h2>
+        <p class="section-sub" data-i18n="how.sub">智能体进化的不是分数，而是「如何搜索」本身。</p>
+      </div>
+      <div class="pipeline reveal">
+        <div class="phase"><div class="num">01</div><h4 data-i18n="how.phase1">行动</h4><p data-i18n="how.phase1.d">每个智能体按其策略采样 N 个候选解。</p><span class="arrow">→</span></div>
+        <div class="phase"><div class="num">02</div><h4 data-i18n="how.phase2">评估</h4><p data-i18n="how.phase2.d">按 incumbent 得分排序，记录指标。</p><span class="arrow">→</span></div>
+        <div class="phase"><div class="num">03</div><h4 data-i18n="how.phase3">选择</h4><p data-i18n="how.phase3.d">精英保留；锦标赛选父代。</p><span class="arrow">→</span></div>
+        <div class="phase"><div class="num">04</div><h4 data-i18n="how.phase4">繁殖</h4><p data-i18n="how.phase4.d">克隆或杂交，继承 incumbent 与变异策略。</p></div>
+      </div>
+
+      <h3 style="margin-top:48px" class="reveal" data-i18n="how.genes.title">被进化的基因</h3>
+      <p class="section-sub reveal" data-i18n="how.genes.sub">三个基因决定智能体如何搜索。</p>
+      <div class="table-wrap reveal">
+        <table>
+          <thead><tr><th data-i18n="how.gene">基因</th><th data-i18n="how.range">范围</th><th data-i18n="how.meaning">语义</th></tr></thead>
+          <tbody>
+            <tr><td><code>iteration</code></td><td class="mono">1 – 20</td><td data-i18n="how.gene1">每次行动采样的候选解数量</td></tr>
+            <tr><td><code>focus</code></td><td class="mono">0.0 – 1.0</td><td data-i18n="how.gene2">采样围绕当前最优解的集中程度</td></tr>
+            <tr><td><code>risk_taking</code></td><td class="mono">0.0 – 1.0</td><td data-i18n="how.gene3">探索步长倍数</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3 style="margin-top:48px" class="reveal" data-i18n="how.problems.title">基准问题</h3>
+      <p class="section-sub reveal" data-i18n="how.problems.sub">全部为最大化问题，最优值 0.0。</p>
+      <div class="grid grid-3 reveal">
+        <div class="card"><h3><code>sphere</code></h3><p data-i18n="how.problems.sub">单峰碗：f(x) = −Σx²，考验纯利用能力。</p></div>
+        <div class="card"><h3><code>rastrigin</code></h3><p>密集多峰：大量局部最优，考验探索/利用平衡。</p></div>
+        <div class="card"><h3><code>rosenbrock</code></h3><p>弯曲香蕉谷：最优点在 (1,1)，考验精细收敛。</p></div>
+      </div>
+    </section>
+
+    <!-- ================= BENCHMARKS ================= -->
+    <section id="benchmarks">
+      <div class="reveal">
+        <span class="kicker" data-i18n="bench.kicker">BENCHMARKS</span>
+        <h2 data-i18n="bench.title">真实运行的数据</h2>
+        <p class="section-sub" data-i18n="bench.sub">以下曲线由实际运行生成，不是示意图。</p>
+      </div>
+      <div class="reveal">
+        <div class="bench-tabs">
+          <button class="bench-tab active" data-problem="rastrigin">rastrigin</button>
+          <button class="bench-tab" data-problem="sphere">sphere</button>
+          <button class="bench-tab" data-problem="rosenbrock">rosenbrock</button>
+        </div>
+        <div class="bench-grid">
+          <div class="bench-chart-box">
+            <h4 data-i18n="bench.chart1">最优得分收敛（均值 ± 极值带）</h4>
+            <canvas id="bench-chart-1"></canvas>
+          </div>
+          <div class="bench-chart-box">
+            <h4 data-i18n="bench.chart2">策略演化（种群均值）</h4>
+            <canvas id="bench-chart-2"></canvas>
+          </div>
+        </div>
+        <div class="bench-cards">
+          <div class="bench-card"><div class="label" data-i18n="bench.card.final">最终最优得分（10 次试验）</div><div class="value" id="bench-final">—</div><div class="sub"><span data-i18n="bench.card.range">范围</span>: <span id="bench-range">—</span></div></div>
+          <div class="bench-card"><div class="label" data-i18n="bench.card.converged">收敛试验数</div><div class="value" id="bench-converged">—</div><div class="sub"><span data-i18n="bench.card.convgen">平均收敛代际</span>: <span id="bench-convgen">—</span></div></div>
+          <div class="bench-card"><div class="label" data-i18n="bench.card.diversity">末期多样性</div><div class="value" id="bench-diversity">—</div><div class="sub">strategy-space L1 distance</div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= QUICKSTART ================= -->
+    <section id="quickstart">
+      <div class="reveal">
+        <span class="kicker" data-i18n="quick.kicker">QUICKSTART</span>
+        <h2 data-i18n="quick.title">三十秒开始</h2>
+        <p class="section-sub" data-i18n="quick.sub">零依赖安装，Python ≥ 3.10。</p>
+      </div>
+      <div class="grid grid-2 reveal">
+        <div class="codeblock">
+          <button class="copy" data-copy="#code-install">copy</button>
+          <div id="code-install"><span class="c"># install &amp; run (zero dependencies)</span>
+<span class="c">$</span> pip install agentlegion
+<span class="c">$</span> agentlegion run <span class="k">--seed</span> <span class="n">42</span>
+
+<span class="c"># multi-trial experiment → REPORT.md</span>
+<span class="c">$</span> agentlegion experiment <span class="k">--trials</span> <span class="n">5</span>
+
+<span class="c"># tests</span>
+<span class="c">$</span> python -m unittest discover tests -v</div>
+        </div>
+        <div class="codeblock">
+          <button class="copy" data-copy="#code-api">copy</button>
+          <div id="code-api"><span class="k">from</span> agent_legion <span class="k">import</span> Environment, load_config
+
+config = <span class="f">load_config</span>(SEED=<span class="n">42</span>, GENERATIONS=<span class="n">20</span>)
+env = <span class="f">Environment</span>(config)
+result = env.<span class="f">run_simulation</span>()
+
+<span class="f">print</span>(result.<span class="f">summary</span>()[<span class="s">"final_best"</span>])
+<span class="c"># -0.000139 — evolved from -10.47</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= ARCHITECTURE ================= -->
+    <section id="architecture">
+      <div class="reveal">
+        <span class="kicker" data-i18n="arch.kicker">ARCHITECTURE</span>
+        <h2 data-i18n="arch.title">代码结构</h2>
+        <p class="section-sub" data-i18n="arch.sub">纯标准库实现，每个模块职责单一、可独立测试。</p>
+      </div>
+      <div class="panel reveal">
+        <div class="tree"><span class="dir">agent_legion/</span>            <span class="note"># core package — zero dependencies</span>
+├── <span class="file">agent.py</span>         <span class="note"># act / clone / breed + incumbent memory</span>
+├── <span class="file">strategy.py</span>      <span class="note"># typed genes: bounds, mutation, crossover</span>
+├── <span class="file">environment.py</span>   <span class="note"># the evolution loop (select &amp; reproduce)</span>
+├── <span class="file">problems.py</span>      <span class="note"># benchmark objective functions</span>
+├── <span class="file">llm.py</span>           <span class="note"># Mock (deterministic) + OpenAI-compatible</span>
+├── <span class="file">metrics.py</span>       <span class="note"># per-generation stats, convergence</span>
+├── <span class="file">report.py</span>        <span class="note"># report rendering from real run data</span>
+├── <span class="file">config.py</span>        <span class="note"># configuration loading &amp; validation</span>
+└── <span class="file">cli.py</span>           <span class="note"># the agentlegion command line</span>
+
+<span class="dir">tests/</span>                    <span class="note"># 121 unit tests (unittest, stdlib)</span>
+<span class="dir">scripts/</span>                  <span class="note"># regenerate website benchmark data</span>
+<span class="dir">docs/</span>                     <span class="note"># this website (GitHub Pages)</span></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div>
+      <div style="color:var(--text);font-weight:700;font-size:16px;margin-bottom:8px">AgentLegion</div>
+      <div data-i18n="footer.tag">自我克隆的 AI 智能体，通过竞争寻求最优解。</div>
+      <div style="margin-top:6px"><span data-i18n="footer.mit">MIT License</span> · <span data-i18n="footer.built">官方网站由 AgentLegion 项目组维护</span></div>
+    </div>
+    <div class="footer-links">
+      <a href="https://github.com/bit-cook/AgentLegion" target="_blank" rel="noopener">GitHub</a>
+      <a href="https://github.com/bit-cook/AgentLegion/issues" target="_blank" rel="noopener">Issues</a>
+      <a href="https://github.com/bit-cook/AgentLegion/blob/main/README.md" target="_blank" rel="noopener">README</a>
+      <a href="https://github.com/bit-cook/AgentLegion/blob/main/REPORT.md" target="_blank" rel="noopener">REPORT.md</a>
+    </div>
+  </footer>
+
+  <script src="assets/app.js"></script>
+</body>
+</html>

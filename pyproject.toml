@@ -1,0 +1,55 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "agentlegion"
+dynamic = ["version"]
+description = "Self-cloning AI agents that compete for optimal solutions — one becomes many."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [{ name = "AgentLegion contributors" }]
+keywords = [
+    "ai-agents",
+    "evolutionary-algorithms",
+    "genetic-algorithm",
+    "self-cloning",
+    "multi-agent",
+    "optimization",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+# Zero runtime dependencies on purpose: the core engine and the deterministic
+# mock backend are pure standard library. The real OpenAI-compatible backend
+# also uses only stdlib (urllib), so `pip install .` is all you ever need.
+dependencies = []
+
+[project.optional-dependencies]
+dev = []
+
+[project.urls]
+Homepage = "https://github.com/bit-cook/AgentLegion"
+Documentation = "https://bit-cook.github.io/AgentLegion/"
+Repository = "https://github.com/bit-cook/AgentLegion"
+Issues = "https://github.com/bit-cook/AgentLegion/issues"
+
+[project.scripts]
+agentlegion = "agent_legion.cli:main"
+
+[tool.setuptools]
+packages = ["agent_legion"]
+
+[tool.setuptools.dynamic]
+version = { attr = "agent_legion.version.__version__" }
