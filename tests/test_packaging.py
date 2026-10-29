@@ -1,23 +1,47 @@
 """Version alignment: pyproject, package __version__, README badge text."""
 import re
-import tomllib
 import unittest
 from pathlib import Path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 
+try:
+    import tomllib
+except ModuleNotFoundError:  # Python 3.10 has no tomllib in the stdlib
+    tomllib = None
+
+
+def _read_pyproject() -> str:
+    return (REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8")
+
 
 class TestVersionAlignment(unittest.TestCase):
-    def test_pyproject_version_matches_package(self):
-        pyproject = tomllib.loads((REPO_ROOT / "pyproject.toml").read_text(encoding="utf-8"))
-        self.assertIn("dynamic", pyproject["project"])
-        self.assertIn("version", pyproject["project"]["dynamic"])
-        self.assertEqual(
-            pyproject["tool"]["setuptools"]["dynamic"]["version"]["attr"],
-            "agent_legion.version.__version__",
-        )
+    def test_pyproject_declares_dynamic_version_from_package(self):
+        text = _read_pyproject()
+        if tomllib is not None:
+            pyproject = tomllib.loads(text)
+            self.assertIn("dynamic", pyproject["project"])
+            self.assertIn("version", pyproject["project"]["dynamic"])
+            self.assertEqual(
+                pyproject["tool"]["setuptools"]["dynamic"]["version"]["attr"],
+                "agent_legion.version.__version__",
+            )
+        else:  # regex fallback keeps this check meaningful on Python 3.10
+            self.assertRegex(
+                text,
+                r'(?m)^dynamic\s*=\s*\["version"\]',
+                "[project] section must declare dynamic version",
+            )
+            self.assertRegex(
+                text,
+                r'version\s*=\s*\{\s*attr\s*=\s*"agent_legion\.version\.__version__"\s*\}',
+                "setuptools dynamic version must read agent_legion.version.__version__",
+            )
+
+    def test_package_version_is_semver(self):
         from agent_legion import __version__
 
+        self.assertRegex(__version__, r"^\d+\.\d+\.\d+$")
         self.assertEqual(__version__, "1.0.0")
 
     def test_readme_badges_reference_existing_workflow(self):
